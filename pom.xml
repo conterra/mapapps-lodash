@@ -185,21 +185,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <root.build.outputPath>${project.build.directory}/webapp</root.build.outputPath>
         <js.build.outputPath>${root.build.outputPath}/js</js.build.outputPath>
-        <mapapps.version>4.11.1</mapapps.version><!-- JS lib versions -->
-        <apprt.version>${mapapps.version}</apprt.version><!-- java lib versions -->
+        
         <ct.jsregistry.version>1.4.1</ct.jsregistry.version>
-        <default.app.name>sample</default.app.name><!-- don't do this in production configuration! This allows to go any http traffic over the /proxy endpoint -->
-        <proxy.allowedServerUrls>
-            *://*:*/**;
-        </proxy.allowedServerUrls>
-        <proxy.allowedSSLDNs>*</proxy.allowedSSLDNs>
-        <proxy.use.rules></proxy.use.rules>
-        <jetty.port>9090</jetty.port>
-        <mvn.cmd>mvn</mvn.cmd>
         <gulp.task></gulp.task>
+        
+        <!-- for upload goal -->
         <mapapps.user><!-- set correct username for map.apps remote installation--></mapapps.user>
         <mapapps.pw><!-- set correct password for map.apps remote installation--></mapapps.pw><!-- enable this if "upload" profile should only deploy bundles -->
-        <skip.apps.upload>false</skip.apps.upload>
+        <mapapps.remote.base></mapapps.remote.base>
     </properties>
     <profiles>
         <profile>
