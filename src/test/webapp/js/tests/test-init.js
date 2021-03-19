@@ -1,0 +1,8 @@
+testConfig({
+    jsregistry: [{
+            packages: [
+                "*"
+            ]
+        }
+    ]
+});

@@ -1,0 +1,9 @@
+{
+    "name": "dn_lodash",
+    "version": "0.0.1",
+    "dependencies": {},
+    "main": "index",
+    "layer": "index",
+    "i18n": [],
+    "bundle": true
+}
