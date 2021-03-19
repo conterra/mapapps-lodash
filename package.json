@@ -5,7 +5,7 @@
     "devDependencies": {
         "ct-mapapps-gulp-js": "^0.5.16",
         "ct-mapapps-browser-sync": "^0.0.15",
-        "puppeteer": "^5.5.0",
+        "puppeteer": "8.0.0",
         "lodash": "4.17.21"
     }
 }
