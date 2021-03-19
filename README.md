@@ -4,7 +4,7 @@
 
 This project shows a custom build of the [lodash](https://lodash.com/) library using a build setup very related to [mapapps-4-developers](https://github.com/conterra/mapapps-4-developers).
 
-The result of the build is a file `mapapps-lodash-<version>.jar` which can be uploaded into a map.apps instance or references by a [mapapps-4-developers](https://github.com/conterra/mapapps-4-developers) based project.
+The result of the build is a file `mapapps-lodash-<version>.jar` which can be uploaded into a map.apps instance or referenced by a [mapapps-4-developers](https://github.com/conterra/mapapps-4-developers) based project.
 
 The setup uses an experimental feature of [ct-mapapps-gulp-js](https://www.npmjs.com/package/ct-mapapps-gulp-js) to support [rollup](https://rollupjs.org/) builds.
 
