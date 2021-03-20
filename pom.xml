@@ -5,22 +5,16 @@
     <artifactId>mapapps-lodash</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <dependencies>
-        <!-- Only for tests -->
-        <dependency>
-            <groupId>org.dojotoolkit</groupId>
-            <artifactId>dojo-release</artifactId>
-            <version>1.16.3-2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.conterra.jsrt</groupId>
-            <artifactId>ct-jsrt-test-intern</artifactId>
-            <version>2.0.0</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/js</directory>
+                <targetPath>${js.build.outputPath}</targetPath>
+                <excludes>
+                    <exclude>**/.js</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -57,10 +51,6 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>3.2.3</version>
-                </plugin>
-                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>properties-maven-plugin</artifactId>
                     <version>1.0.0</version>
@@ -77,27 +67,6 @@
             </plugins>
         </pluginManagement>
         <sourceDirectory>src/main/js</sourceDirectory>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <includes>
-                    <include>application.properties</include>
-                </includes>
-                <filtering>true</filtering>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <excludes>
-                    <exclude>application.properties</exclude>
-                </excludes>
-            </testResource>
-            <testResource>
-                <directory>src/test/webapp</directory>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-            </testResource>
-        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -116,48 +85,17 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution><!-- ensure test resources are copied together with normal resources -->
-                        <goals>
-                            <goal>testResources</goal>
-                        </goals>
-                        <phase>process-resources</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy test lib into bundle-imports</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/bundle-imports</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>run gulp ${gulp.task}</id>
+                        <id>run build</id>
                         <goals>
-                            <goal>gulp</goal>
+                            <goal>npm</goal>
                         </goals>
                         <phase>process-resources</phase>
                         <configuration>
-                            <arguments>${gulp.task}</arguments>
+                            <arguments>run build</arguments>
                         </configuration>
                     </execution>
                 </executions>
@@ -183,13 +121,8 @@
     </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <root.build.outputPath>${project.build.directory}/webapp</root.build.outputPath>
-        <js.build.outputPath>${root.build.outputPath}/js</js.build.outputPath>
-        
-        <ct.jsregistry.version>1.4.1</ct.jsregistry.version>
-        <gulp.task></gulp.task>
-        
-        <!-- for upload goal -->
+        <js.build.outputPath>${project.build.directory}/js</js.build.outputPath>
+        <ct.jsregistry.version>1.4.1</ct.jsregistry.version><!-- for upload goal -->
         <mapapps.user><!-- set correct username for map.apps remote installation--></mapapps.user>
         <mapapps.pw><!-- set correct password for map.apps remote installation--></mapapps.pw><!-- enable this if "upload" profile should only deploy bundles -->
         <mapapps.remote.base></mapapps.remote.base>
@@ -232,54 +165,7 @@
             </build>
         </profile>
         <profile>
-            <id>env-dev</id><!-- This is the development profile, per default it points to a build.properties
-                file in the user home, but this can be changed localy by specifiying the
-                property local.configfile with its own string.
-            -->
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>dev</value>
-                </property>
-            </activation>
-            <properties>
-                <local.configfile>${basedir}/build.properties</local.configfile><!-- -Denv=dev enables preview mode -->
-                <gulp.task>preview</gulp.task>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>properties-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>initialize</phase>
-                                <goals>
-                                    <goal>read-project-properties</goal>
-                                </goals>
-                                <configuration>
-                                    <quiet>true</quiet>
-                                    <files>
-                                        <file>${local.configfile}</file>
-                                    </files>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>run-js-tests</id>
-            <properties>
-                <gulp.task>test</gulp.task>
-            </properties>
-        </profile>
-        <profile>
             <id>compress</id>
-            <properties>
-                <gulp.task>compress</gulp.task>
-            </properties>
             <build>
                 <plugins>
                     <plugin>

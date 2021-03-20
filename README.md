@@ -2,11 +2,9 @@
 
 > NOTE: This is only a sample how a library can be integrated into map.apps by a custom build.
 
-This project shows a custom build of the [lodash](https://lodash.com/) library using a build setup very related to [mapapps-4-developers](https://github.com/conterra/mapapps-4-developers).
+This project shows a custom build of the [lodash](https://lodash.com/) library using [rollup](https://rollupjs.org/) and maven.
 
 The result of the build is a file `mapapps-lodash-<version>.jar` which can be uploaded into a map.apps instance or referenced by a [mapapps-4-developers](https://github.com/conterra/mapapps-4-developers) based project.
-
-The setup uses an experimental feature of [ct-mapapps-gulp-js](https://www.npmjs.com/package/ct-mapapps-gulp-js) to support [rollup](https://rollupjs.org/) builds.
 
 ## How to build
 
@@ -16,13 +14,10 @@ Pre-requisite is maven because at the end a Java `jar` file is created.
 # install node + all required npm modules
 mvn initialize
 
-# compiles the project in development mode, it opens a browser, which can be used to execute the sample unit tests.
+# compiles the project in development mode (-Denv=dev prevents re-execution of node/npm install).
 mvn compile -Denv=dev
 
-# compiles the project and executes the tests using puppeteer
-mvn test -P run-js-tests
-
-# compiles + compress + create dependencies.json
+# compiles + compress + create dependencies.json and .jar file
 mvn install -P compress
 
 # clean target directory
@@ -51,8 +46,7 @@ const str = join(['a', 'b', 'c'], '~');
 
 ## Hints
 
-The build configuration of the bundle is controlled in the file [build.config.js](./src/main/js/bundles/dn_lodash/build.config.js). The keyword `npmDependencies` allows the usage of imports from specific npm modules during build time.
-Rollup bundles the contents of the npm imports into the files which declares the imports.
+The build configuration of the bundle is controlled in the file [rollup.config.js](./rollup.config.js). During the build `rollup` bundles all contents referenced by import statements in the target files.
 
 For example the file [index.js](./src/main/js/bundles/dn_lodash/index.js) simple declares:
 
@@ -98,6 +92,7 @@ A `map.apps bundle archive`:
 
 Other ways:
 
-- Use [webpack](https://webpack.js.org/) or [rollup](https://rollupjs.org/) directly to build the library.
+- Use [webpack](https://webpack.js.org/) to build the library.
 - If the library has an AMD build then this can be used directly.
+  - Lodash has own [build tools](https://www.npmjs.com/package/lodash-cli), which can be used to produce "AMD" output, which can then packaged into a jar file.
 - At the end the `maven` part is required to produce the `map.apps bundle archive`.
