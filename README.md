@@ -29,9 +29,9 @@ mvn clean
 After successful build and integration into an map.apps instance a bundle can use the new created bundle `dn_lodash` by using following imports:
 
 ```js
-import { join } from "dn_lodash"
+import _ from "dn_lodash"
 
-const str = join(['a', 'b', 'c'], '~');
+const str = _.join(['a', 'b', 'c'], '~');
 // assert.equal(str, "a~b~c");
 ```
 
@@ -51,10 +51,11 @@ The build configuration of the bundle is controlled in the file [rollup.config.j
 For example the file [index.js](./src/main/js/bundles/dn_lodash/index.js) simple declares:
 
 ```js
-export * from "lodash";
+import _ from "lodash";
+export default _;
 ```
 
-which means every export of `lodash` is re-exported by this file.
+which means export the `lodash` api.
 
 In contrast to this the file [reduced.js](./src/main/js/bundles/dn_lodash/reduced.js) declares:
 

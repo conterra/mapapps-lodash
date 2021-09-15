@@ -1,2 +1,3 @@
 // exports anything from lodash
-export * from "lodash";
+import _ from "lodash";
+export default _;
